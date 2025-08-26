@@ -1,0 +1,32 @@
+{
+  "name": "Shabbat Eve Living Room",
+  "steps": [
+    {
+      "action": "light.set",
+      "target": "living-room",
+      "params": {
+        "preset": "dim",
+        "color": "#ffaa00",
+        "intensity": 40
+      }
+    },
+    {
+      "action": "audio.play",
+      "target": "home-speakers",
+      "params": {
+        "playlist": "Chassidic Nigunim",
+        "volume": 60
+      },
+      "delay": 5
+    },
+    {
+      "action": "fabricate.print",
+      "target": "3d-printer",
+      "params": {
+        "object": "candlestick",
+        "material": "pla_silver"
+      },
+      "delay": 30
+    }
+  ]
+}
