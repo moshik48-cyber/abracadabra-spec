@@ -1,0 +1,48 @@
+{
+  "version": "abra-0.1.0",
+  "intent": "meditation scene",
+  "bind": {
+    "lights": { "type": "light_group" },
+    "sound":  { "type": "audio" },
+    "screen": { "type": "screen" },
+    "haptics": { "type": "haptics" }
+  },
+  "scene": {
+    "flow": [
+      {
+        "do": [
+          { "lighting": { "ref": "mainLights", "preset": "warm-dim" } },
+          { "audio":    { "ref": "mainAudio",  "play": "meditation-music.mp3" } },
+          { "screen":   { "ref": "mainScreen", "show": "breathe-in.png" } }
+        ]
+      },
+      {
+        "after": "5s",
+        "do": [
+          { "screen":   { "ref": "mainScreen", "show": "breathe-out.png" } }
+        ]
+      },
+      {
+        "after": "10s",
+        "do": [
+          { "screen":   { "ref": "mainScreen", "show": "breathe-in.png" } },
+          { "haptics":  { "ref": "phone", "pattern": "short-pulse" } }
+        ]
+      },
+      {
+        "after": "20s",
+        "do": [
+          { "screen":   { "ref": "mainScreen", "show": "breathe-out.png" } }
+        ]
+      },
+      {
+        "after": "60s",
+        "do": [
+          { "audio":    { "ref": "mainAudio",  "stop": true } },
+          { "lighting": { "ref": "mainLights", "preset": "off" } },
+          { "screen":   { "ref": "mainScreen", "clear": true } }
+        ]
+      }
+    ]
+  }
+}
