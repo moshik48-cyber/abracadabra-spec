@@ -7,13 +7,14 @@
   "properties": {
     "version": { "type": "string", "const": "abra-0.1.0" },
     "intent":  { "type": "string", "minLength": 1 },
-    "bind":    {
+
+    "bind": {
       "type": "object",
       "additionalProperties": {
         "type": "object",
         "required": ["type"],
         "properties": {
-          "type": { "enum": ["light_group","audio","screen"] },
+          "type": { "enum": ["light_group", "audio", "screen", "haptics"] },
           "tags": { "type": "array", "items": { "type": "string" } },
           "src":  { "type": "string" },
           "id":   { "type": "string" }
@@ -21,6 +22,7 @@
         "additionalProperties": false
       }
     },
+
     "scene": {
       "type": "object",
       "required": ["flow"],
@@ -30,69 +32,126 @@
           "minItems": 1,
           "items": {
             "oneOf": [
-              { "type": "object", "required": ["do"], "properties": {
-                "do": { "type": "array", "items": { "$ref": "#/$defs/action" }, "minItems": 1 }
-              }},
-              { "type": "object", "required": ["after","do"], "properties": {
-                "after": { "type": "string", "pattern": "^[0-9]+(ms|s)$" },
-                "do": { "type": "array", "items": { "$ref": "#/$defs/action" }, "minItems": 1 }
-              }}
+              { "$ref": "#/$defs/flowStepDoOnly" },
+              { "$ref": "#/$defs/flowStepAfterDo" }
             ]
           }
         }
       },
       "additionalProperties": false
-    },
-    "guards": {
-      "type": "object",
-      "properties": {
-        "allow":   { "type": "array", "items": { "type": "string" } },
-        "dry_run": { "type": "boolean" },
-        "fallback":{ "type": "string" },
-        "audit":   { "type": "boolean" }
-      },
-      "additionalProperties": true
     }
   },
-  "additionalProperties": false,
+
   "$defs": {
-    "action": {
+    /* ---------- Flow step shapes ---------- */
+    "flowStepDoOnly": {
       "type": "object",
+      "required": ["do"],
+      "properties": {
+        "do": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/action" },
+          "minItems": 1
+        },
+        "after": { "type": "string" }
+      },
+      "additionalProperties": false,
+      "not": { "required": ["after"] }
+    },
+
+    "flowStepAfterDo": {
+      "type": "object",
+      "required": ["after", "do"],
+      "properties": {
+        "after": { "type": "string", "pattern": "^[0-9]+(ms|s)$" },
+        "do": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/action" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false
+    },
+
+    /* ---------- Actions ---------- */
+    "action": {
       "oneOf": [
-        { "required": ["lighting"], "properties": {
-          "lighting": {
-            "type": "object",
-            "required": ["ref","preset"],
-            "properties": {
-              "ref": { "type": "string" },
-              "preset": { "type": "string" }
-            },
-            "additionalProperties": false
-          }
-        }},
-        { "required": ["audio"], "properties": {
-          "audio": {
-            "type": "object",
-            "properties": {
-              "ref":  { "type": "string" },
-              "play": { "type": "boolean" },
-              "stop": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          }
-        }},
-        { "required": ["screen"], "properties": {
-          "screen": {
-            "type": "object",
-            "required": ["ref","show"],
-            "properties": {
-              "ref":  { "type": "string" },
-              "show": { "type": "string" }
-            },
-            "additionalProperties": false
-          }
-        }}
+        { "$ref": "#/$defs/lightingAction" },
+        { "$ref": "#/$defs/audioAction" },
+        { "$ref": "#/$defs/screenAction" },
+        { "$ref": "#/$defs/hapticsAction" }
       ]
+    },
+
+    "lightingAction": {
+      "type": "object",
+      "required": ["lighting"],
+      "properties": {
+        "lighting": {
+          "type": "object",
+          "required": ["ref", "preset"],
+          "properties": {
+            "ref":    { "type": "string" },
+            "preset": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "audioAction": {
+      "type": "object",
+      "required": ["audio"],
+      "properties": {
+        "audio": {
+          "type": "object",
+          "properties": {
+            "ref":    { "type": "string" },
+            "play":   { "type": "boolean" },
+            "stop":   { "type": "boolean" },
+            "src":    { "type": "string" },
+            "volume": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "screenAction": {
+      "type": "object",
+      "required": ["screen"],
+      "properties": {
+        "screen": {
+          "type": "object",
+          "required": ["ref"],
+          "properties": {
+            "ref":  { "type": "string" },
+            "show": { "type": "string" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+
+    "hapticsAction": {
+      "type": "object",
+      "required": ["haptics"],
+      "properties": {
+        "haptics": {
+          "type": "object",
+          "properties": {
+            "pattern":  { "type": "string" },
+            "intensity":{ "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
     }
-  }
+  },
+
+  "additionalProperties": false
 }
