@@ -33,3 +33,11 @@ Core format is **JSON-based**:
     ]
   }
 }
+### 🌟 Examples
+
+```json
+{
+  "version": "abra-0.1.0",
+  "intent": "welcome ceremony",
+  "scene": { "flow": [ ... ] }
+}
