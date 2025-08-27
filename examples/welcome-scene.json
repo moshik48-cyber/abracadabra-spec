@@ -2,19 +2,22 @@
   "version": "abra-0.1.0",
   "intent": "welcome ceremony",
   "bind": {
-    "lights": { "type": "light_group", "id": "mainLights" }
+    "lights": { "type": "light_group", "id": "mainLights" },
+    "sound": { "type": "audio", "id": "mainAudio" }
   },
   "scene": {
     "flow": [
       {
         "do": [
-          { "lighting": { "ref": "mainLights", "preset": "on" } }
+          { "lighting": { "ref": "mainLights", "preset": "on" } },
+          { "audio": { "ref": "mainAudio", "play": true } }
         ]
       },
       {
         "after": "5s",
         "do": [
-          { "lighting": { "ref": "mainLights", "preset": "off" } }
+          { "lighting": { "ref": "mainLights", "preset": "off" } },
+          { "audio": { "ref": "mainAudio", "stop": true } }
         ]
       }
     ]
