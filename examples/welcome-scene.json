@@ -2,9 +2,7 @@
   "version": "abra-0.1.0",
   "intent": "welcome ceremony",
   "bind": {
-    "lights": { "type": "light_group", "id": "mainLights" },
-    "sound":  { "type": "audio", "id": "mainAudio" },
-    "screen": { "type": "screen", "id": "mainScreen" }
+    "lights": { "type": "light_group", "id": "mainLights" }
   },
   "scene": {
     "flow": [
