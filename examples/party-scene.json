@@ -1,0 +1,32 @@
+{
+  "version": "abra-0.1.0",
+  "intent": "party scene",
+  "bind": {
+    "lights": { "type": "light_system" },
+    "sound": { "type": "audio_system" },
+    "screen": { "type": "screen_system" }
+  },
+  "scene": {
+    "flow": [
+      {
+        "do": [
+          { "lighting": { "ref": "mainLights", "preset": "red" } },
+          { "audio": { "ref": "mainAudio", "play": "party-music.mp3" } }
+        ]
+      },
+      {
+        "after": "5s",
+        "do": [
+          { "lighting": { "ref": "mainLights", "preset": "blue" } }
+        ]
+      },
+      {
+        "after": "10s",
+        "do": [
+          { "lighting": { "ref": "mainLights", "preset": "green" } },
+          { "screen": { "ref": "mainScreen", "show": "party-visuals.mp4" } }
+        ]
+      }
+    ]
+  }
+}
