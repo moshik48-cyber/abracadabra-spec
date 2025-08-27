@@ -1,46 +1,35 @@
-# Abracadabra – Vision Schema (v0.1)
+# ✨ Abracadabra – Speak Your Vision Into Reality  
 
-**מה זה?**  
-שפה/סכמה לתיאור *סצנה אחת* (חזון מרובה-פעולות) שניתנת לקומפילציה לכלים שונים (MCP / Node-RED / Home-Assistant / DMX / ...).
-
-**למה צריך את זה?**  
-LLM מבין שפה טבעית ו-MCP מחבר לכלים, אבל חסר **פורמט אחד** שמתאר חזון שלם (מי עושה מה, מתי ובאיזו אווירה).  
-Abracadabra היא ה־"HTML" של סצנות.
+> **Abracadabra** is a new **vision schema language** – a simple way to describe and run *experiential scenes* (lights, sound, screen, vibration, IoT).  
+> Think of it as **HTML for experiences**: from text → to living, multi-sensory reality.  
 
 ---
 
-### ליבת הסכמה
-- `intent` – כותרת/שם החזון
-- `bind` – שמות יציבים למשאבים (תאורה/סאונד/מסך)
-- `scene.flow` – רצף/מקביליות של פעולות (עם `after` לזמנים)
-- `guards` – כללי בטיחות/הרשאות/גיבויים
+## 🌟 Why Abracadabra?
+- 🪄 **Simple**: Write what you imagine, run it anywhere.  
+- 🌍 **Universal**: A shared schema for XR, IoT, Smart Homes, Events.  
+- 🔌 **Interoperable**: Works with LLMs, MCP, and any API/Adapter.  
+- 📦 **Extensible**: Developers can add their own adapters.  
 
----## דוגמה
-כך נראה תסריט בשפת Abracadabra להפעלת תאורה ומוסיקה יחד:
+---
+
+## 📜 Vision Schema (v0.1)
+Core format is **JSON-based**:
 
 ```json
 {
   "version": "abra-0.1.0",
-  "intent": "חדר שבת",
+  "intent": "welcome ceremony",
   "bind": {
-    "lights": { "type": "light_group", "tags": ["living-room"] },
-    "music": { "type": "audio", "src": "playlist:shabbat" }
+    "lights": { "type": "light_group", "id": "main" },
+    "sound":  { "type": "audio", "src": "intro.wav" },
+    "screen": { "type": "screen", "id": "stage" }
   },
   "scene": {
     "flow": [
-      { "do": [ { "lighting": { "ref": "lights", "preset": "dim" } } ] },
-      { "after": "2s", "do": [ { "audio": { "ref": "music", "play": true } } ] }
+      { "do": [ { "lighting": { "ref": "main", "preset": "dim-blue" } } ] },
+      { "after": "2s", "do": [ { "audio": { "ref": "sound", "play": true } } ] },
+      { "after": "5s", "do": [ { "screen": { "ref": "stage", "show": "WELCOME" } } ] }
     ]
   }
 }
-
-
-
-### מצב
-טיוטת v0.1 – בסיס מינימלי, קל ליישום.
-
-### רודמפ קצר
-- v0.1 = JSON בלבד  
-- v0.2 = דקדוק DSL  
-- v0.3 = יצואנים (Node-RED/HA)  
-- v0.4 = קונפורמנס טסטים רשמיים
