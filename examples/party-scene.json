@@ -2,9 +2,9 @@
   "version": "abra-0.1.0",
   "intent": "party scene",
   "bind": {
-    "lights": { "type": "light_system" },
-    "sound": { "type": "audio_system" },
-    "screen": { "type": "screen_system" }
+    "lights": { "type": "light_group" },
+    "sound": { "type": "audio" },
+    "screen": { "type": "screen" }
   },
   "scene": {
     "flow": [
