@@ -1,6 +1,23 @@
-### 🌟 Example
+# ✨ Abracadabra – Speak Your Vision Into Reality
 
-Here’s a simple **Abracadabra scene**:
+**Abracadabra** is a new **vision schema language** – a simple way to describe and run **experiential scenes** (lights, sound, screen, vibration, IoT).  
+
+Think of it as **HTML for experiences**:  
+from text → to living, multi-sensory reality.
+
+---
+
+### 🚀 Why Abracadabra?
+- ✨ **Simple**: Write what you imagine, run it anywhere.  
+- 🌍 **Universal**: A shared schema for XR, IoT, Smart Homes, Events.  
+- 🔌 **Interoperable**: Works with LLMs, MCP, and any API/Adapter.  
+- 📦 **Extensible**: Developers can add their own adapters.  
+
+---
+
+### 📜 Vision Schema (v0.1)
+
+Core format is **JSON-based**:
 
 ```json
 {
