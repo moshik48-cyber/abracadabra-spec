@@ -10,15 +10,13 @@
     "flow": [
       {
         "do": [
-          { "lighting": { "ref": "mainLights", "preset": "on" } },
-          { "audio": { "ref": "mainAudio", "play": true } }
+          { "lighting": { "ref": "mainLights", "preset": "on" } }
         ]
       },
       {
         "after": "5s",
         "do": [
-          { "lighting": { "ref": "mainLights", "preset": "off" } },
-          { "audio": { "ref": "mainAudio", "stop": true } }
+          { "lighting": { "ref": "mainLights", "preset": "off" } }
         ]
       }
     ]
