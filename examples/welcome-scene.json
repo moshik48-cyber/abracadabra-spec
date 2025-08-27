@@ -2,25 +2,16 @@
   "version": "abra-0.1.0",
   "intent": "welcome ceremony",
   "bind": {
-    "mainLights": { "type": "light_group" },
-    "mainAudio": { "type": "audio", "src": "intro.wav" },
-    "mainScreen": { "type": "screen" }
+    "lights": { "type": "light_group", "id": "mainLights" },
+    "sound":  { "type": "audio", "id": "mainAudio" },
+    "screen": { "type": "screen", "id": "mainScreen" }
   },
   "scene": {
     "flow": [
       {
         "do": [
-          { "lighting": { "ref": "mainLights", "preset": "blue-wash" } }
-        ]
-      },
-      {
-        "do": [
+          { "lighting": { "ref": "mainLights", "preset": "on" } },
           { "audio": { "ref": "mainAudio", "play": true } }
-        ]
-      },
-      {
-        "do": [
-          { "screen": { "ref": "mainScreen", "show": "🎉 Welcome to Abracadabra!" } }
         ]
       },
       {
