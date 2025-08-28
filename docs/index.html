@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Abracadabra Playground</title>
+  <style>
+    body { font-family: system-ui, Arial, sans-serif; margin: 0; }
+    header { padding: 16px; border-bottom: 1px solid #eee; }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 16px; }
+    textarea { width: 100%; height: 280px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+    button { padding: 10px 14px; border: 1px solid #ccc; background:#fff; border-radius:10px; cursor:pointer; }
+    .log { background: #fafafa; border:1px solid #eee; padding:10px; height:160px; overflow:auto; font-size:14px; }
+    .screen { height: 80px; display:flex; align-items:center; justify-content:center; border:1px dashed #ccc; border-radius:10px; margin-top:8px;}
+    footer { color:#777; font-size:12px; padding:16px; text-align:center; }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <h2>✨ Abracadabra – Playground</h2>
+    <div>Paste a scene JSON and click <b>Run</b>. You’ll see lights (BG color), hear sound, and feel vibration.</div>
+  </header>
+
+  <main class="wrap">
+    <div class="row">
+      <button id="btn-load-welcome">Load Welcome Example</button>
+      <button id="btn-load-party">Load Party Example</button>
+      <button id="btn-run">Run</button>
+      <button id="btn-stop">Stop</button>
+    </div>
+
+    <textarea id="json"></textarea>
+    <div class="screen" id="screen">screen: (idle)</div>
+    <div class="log" id="log"></div>
+  </main>
+
+  <footer>
+    No installs. Uses WebAudio, Vibration API, CSS. Best on mobile for vibration.<br/>
+    Source: <a href="https://github.com/moshik48-cyber/abracadabra-spec">abracadabra-spec</a>
+  </footer>
+
+<script>
+/** -------- simple logger -------- **/
+const logEl = document.getElementById('log');
+function log(msg){ const t=new Date().toLocaleTimeString(); logEl.innerHTML += `[${t}] ${msg}<br/>`; logEl.scrollTop = logEl.scrollHeight; }
+/** -------- screen + lights -------- **/
+const screenEl = document.getElementById('screen');
+let lightTimer = null;
+function setLight(color){ document.body.style.background = color || '#fff'; }
+function partyLights(ms=150){ stopLights(); let colors=['#ff4081','#00e5ff','#ffd740','#69f0ae','#7c4dff']; let i=0; lightTimer=setInterval(()=>setLight(colors[(i++)%colors.length]), ms); }
+function stopLights(){ if(lightTimer){clearInterval(lightTimer); lightTimer=null;} setLight('#fff'); }
+/** -------- audio (WebAudio) -------- **/
+let audioCtx=null, osc=null, gain=null;
+function beepStart(freq=440){ if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)(); osc=audioCtx.createOscillator(); gain=audioCtx.createGain(); osc.type='sine'; osc.frequency.value=freq; osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); }
+function beepStop(){ if(osc){ osc.stop(); osc.disconnect(); osc=null; } if(gain){ gain.disconnect(); gain=null; } }
+async function partyBeep(pattern=[200,100,200,400]){ // on/off ms
+  for(let i=0;i<pattern.length;i++){ if(i%2===0){ beepStart(440+(i*60)); } else { beepStop(); } await waitMs(pattern[i]); }
+  beepStop();
+}
+/** -------- haptics -------- **/
+function vibrate(pattern){ if('vibrate' in navigator){ navigator.vibrate(pattern); } }
+/** -------- helpers -------- **/
+function waitMs(ms){ return new Promise(r=>setTimeout(r, ms)); }
+function parseTime(s){ const m=s.match(/^(\d+)(ms|s)$/); if(!m) throw new Error('bad time: '+s); return m[2]==='s' ? Number(m[1])*1000 : Number(m[1]); }
+/** -------- runner -------- **/
+let abort=false;
+async function runScene(scene){
+  abort=false; stopLights(); beepStop(); vibrate(0); screenEl.textContent = 'screen: (idle)';
+
+  for(const step of scene.scene.flow){
+    if(abort) break;
+    const delay = parseTime(step.after || '0ms'); 
+    await waitMs(delay);
+    if(abort) break;
+    for(const action of step.do){
+      if(action.lighting){
+        const {preset, color='#fff', speed='150ms'} = action.lighting;
+        if(preset==='party'){ partyLights(parseTime(speed)); log('lighting.party'); }
+        else if(preset==='off'){ stopLights(); log('lighting.off'); }
+        else { setLight(color); log('lighting.set '+color); }
+      }
+      if(action.audio){
+        const {beep, stop, pattern} = action.audio;
+        if(beep){ beepStart(beep.frequency || 440); log('audio.beep'); }
+        if(pattern){ partyBeep(pattern); log('audio.pattern'); }
+        if(stop){ beepStop(); log('audio.stop'); }
+      }
+      if(action.screen){
+        const {text} = action.screen;
+        if(text){ screenEl.textContent = text; log('screen.text "'+text+'"'); }
+      }
+      if(action.haptics){
+        const {pulse} = action.haptics;
+        if(pulse){ vibrate(pulse); log('haptics '+JSON.stringify(pulse)); }
+      }
+    }
+  }
+}
+
+const welcome = {
+  "version":"abra-0.1.0",
+  "intent":"welcome ceremony",
+  "bind": { "lights": {"type":"light_group"}, "sound":{"type":"audio"}, "screen":{"type":"screen"} },
+  "scene": { "flow": [
+    { "do":[ { "screen": {"text":"Welcome!"} }, { "lighting": {"color":"#e3f2fd"} } ] },
+    { "after":"2s", "do":[ { "audio":{"beep":{}} }, { "haptics":{"pulse":[100,80,100]} } ] },
+    { "after":"5s", "do":[ { "lighting":{"preset":"off"} }, { "audio":{"stop":true} } ] }
+  ] }
+};
+
+const party = {
+  "version":"abra-0.1.0",
+  "intent":"party mode",
+  "bind": { "lights":{"type":"light_group"}, "sound":{"type":"audio"}, "screen":{"type":"screen"}, "haptics":{"type":"haptics"} },
+  "scene": { "flow": [
+    { "do":[ { "screen":{"text":"🎉 Party time"} }, { "lighting":{"preset":"party","speed":"180ms"} }, { "audio":{"pattern":[250,120,250,120,500]} }, { "haptics":{"pulse":[200,80,200,80,200]} } ] },
+    { "after":"6s", "do":[ { "lighting":{"preset":"off"} }, { "audio":{"stop":true} }, { "screen":{"text":"Done."} } ] }
+  ] }
+};
+
+const input = document.getElementById('json');
+document.getElementById('btn-load-welcome').onclick = ()=> input.value = JSON.stringify(welcome, null, 2);
+document.getElementById('btn-load-party').onclick   = ()=> input.value = JSON.stringify(party, null, 2);
+document.getElementById('btn-run').onclick = ()=>{
+  try{ const obj = JSON.parse(input.value); runScene(obj); }
+  catch(e){ alert('JSON error: '+e.message); }
+};
+document.getElementById('btn-stop').onclick = ()=>{ abort=true; stopLights(); beepStop(); vibrate(0); log('stopped'); };
+
+// preload welcome
+input.value = JSON.stringify(welcome, null, 2);
+</script>
+</body>
+</html>
