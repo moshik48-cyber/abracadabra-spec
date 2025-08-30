@@ -61,3 +61,34 @@ This means:
 In other words:  
 Abracadabra is not just a convenience layer for LLMs — it is also a **resilient protocol for continuity under attack or outage**.  
 Just like HTML pages can be stored and loaded without internet, Vision Schema makes "intent → action" survivable even when connectivity fails.
+
+## 🔍 Related Work
+
+Abracadabra builds on a rich ecosystem of standards and frameworks. Here is how our approach differs:
+
+- **W3C Web of Things (WoT TD):** Describes device capabilities in JSON-LD for interoperability.  
+  → *Abracadabra goes beyond device description to orchestrate cross-domain visions with timing and flow.*
+
+- **Schema.org Actions:** Provides a vocabulary for actions on the web.  
+  → *We define structured multi-step scenarios (Vision Schema), not just atomic actions.*
+
+- **Alexa / Google Smart Home APIs:** Define device intents (lights, thermostat, etc.) for consumer IoT.  
+  → *Abracadabra addresses large-scale, multi-domain coordination (cities, factories, robotics).*
+
+- **OPC UA (industrial interoperability):** Standard for secure industrial data models.  
+  → *We provide human-intent-driven orchestration, not telemetry exchange.*
+
+- **AutomationML (IEC 62714):** Engineering data exchange for digital twins.  
+  → *Our schema is lightweight, natural-language-driven, and suitable for real-time intent execution.*
+
+- **ROS Actions / PDDL / Behavior Trees:** Formal planning models for robotics.  
+  → *Abracadabra bridges LLMs and heterogeneous systems with a unified, human-readable schema.*
+
+- **MCP / Function Calling (OpenAI, etc.):** Connects LLMs to tools with JSON.  
+  → *We sit above MCP: defining the **vision** (what should happen) and delegating the “how” to adapters/tools.*
+
+---
+
+🧩 **Key Differentiator**:  
+All of the above handle *pieces* (devices, vocabularies, telemetry, planning, or tool calls).  
+**Abracadabra defines a unified, validated schema for human intent as multi-step flows, offline-first, and adapter-ready across domains (IoT, robotics, VR, CAD, public infrastructure).**
