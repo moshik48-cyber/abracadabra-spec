@@ -92,3 +92,6 @@ Abracadabra builds on a rich ecosystem of standards and frameworks. Here is how 
 🧩 **Key Differentiator**:  
 All of the above handle *pieces* (devices, vocabularies, telemetry, planning, or tool calls).  
 **Abracadabra defines a unified, validated schema for human intent as multi-step flows, offline-first, and adapter-ready across domains (IoT, robotics, VR, CAD, public infrastructure).**
+💡 **Investor Note:**  
+While existing standards solve narrow slices of interoperability, **Abracadabra is the first to define a unified, human-readable intent schema that works across domains and offline.**  
+This positions it as both **defensible IP** and a potential **foundational layer** for future AI-driven ecosystems.
