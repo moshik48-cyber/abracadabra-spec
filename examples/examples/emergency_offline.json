@@ -1,0 +1,11 @@
+{
+  "version": "abra-0.1.0",
+  "intent": "Emergency blackout protocol",
+  "scene": {
+    "flow": [
+      { "do": [ { "lighting": { "ref": "emergency_lights", "preset": "white" } } ] },
+      { "after": "1s", "do": [ { "audio": { "ref": "speaker", "play": "generic alarm sound" } } ] },
+      { "after": "2s", "do": [ { "screen": { "ref": "main_display", "show": "⚠ Emergency Protocol Active (Offline Mode)" } } ] }
+    ]
+  }
+}
