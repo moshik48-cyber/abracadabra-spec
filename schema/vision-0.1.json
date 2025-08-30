@@ -1,9 +1,8 @@
 {
-  "$id": "https://abracadabra.dev/schema/vision-0.1.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Abracadabra Vision Schema v0.1",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Abracadabra Vision Schema",
+  "description": "A unified JSON schema to represent human intent as executable scenes across domains (IoT, robotics, VR, etc).",
   "type": "object",
-  "required": ["version", "intent", "scene"],
   "properties": {
     "version": {
       "type": "string",
@@ -11,114 +10,81 @@
     },
     "intent": {
       "type": "string",
-      "minLength": 1
-    },
-    "bind": {
-      "type": "object",
-      "additionalProperties": {
-        "type": "object",
-        "required": ["type"],
-        "properties": {
-          "type": {
-            "enum": ["light_group", "audio", "screen", "haptics"]
-          },
-          "tags": {
-            "type": "array",
-            "items": { "type": "string" }
-          },
-          "src": { "type": "string" },
-          "id": { "type": "string" }
-        },
-        "additionalProperties": false
-      }
+      "description": "A short description of the user's intent"
     },
     "scene": {
       "type": "object",
-      "required": ["flow"],
       "properties": {
         "flow": {
           "type": "array",
-          "minItems": 1,
           "items": {
             "type": "object",
-            "required": ["do"],
             "properties": {
               "after": {
                 "type": "string",
-                "pattern": "^[0-9]+(ms|s)$"
+                "pattern": "^[0-9]+(ms|s)$",
+                "description": "Optional delay before this step (e.g. '500ms', '2s')"
               },
               "do": {
                 "type": "array",
-                "minItems": 1,
-                "items": { "$ref": "#/$defs/action" }
+                "items": {
+                  "type": "object",
+                  "oneOf": [
+                    {
+                      "properties": {
+                        "lighting": {
+                          "type": "object",
+                          "properties": {
+                            "ref": { "type": "string" },
+                            "preset": {
+                              "type": "string",
+                              "enum": ["dim", "blue", "white", "normal"]
+                            }
+                          },
+                          "required": ["ref", "preset"]
+                        }
+                      },
+                      "required": ["lighting"]
+                    },
+                    {
+                      "properties": {
+                        "audio": {
+                          "type": "object",
+                          "properties": {
+                            "ref": { "type": "string" },
+                            "play": { "type": ["boolean", "string"] },
+                            "stop": { "type": "boolean" }
+                          },
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": ["audio"]
+                    },
+                    {
+                      "properties": {
+                        "screen": {
+                          "type": "object",
+                          "properties": {
+                            "ref": { "type": "string" },
+                            "show": { "type": "string" }
+                          },
+                          "required": ["ref", "show"]
+                        }
+                      },
+                      "required": ["screen"]
+                    }
+                  ]
+                },
+                "minItems": 1
               }
-            }
-          }
+            },
+            "required": ["do"]
+          },
+          "minItems": 1
         }
-      }
+      },
+      "required": ["flow"]
     }
   },
-  "$defs": {
-    "action": {
-      "oneOf": [
-        {
-          "type": "object",
-          "required": ["lighting"],
-          "properties": {
-            "lighting": {
-              "type": "object",
-              "required": ["ref", "preset"],
-              "properties": {
-                "ref": { "type": "string" },
-                "preset": { "type": "string" }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["audio"],
-          "properties": {
-            "audio": {
-              "type": "object",
-              "required": ["ref"],
-              "properties": {
-                "ref": { "type": "string" },
-                "src": { "type": "string" },
-                "stop": { "type": "boolean" }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["screen"],
-          "properties": {
-            "screen": {
-              "type": "object",
-              "required": ["ref"],
-              "properties": {
-                "ref": { "type": "string" },
-                "text": { "type": "string" }
-              }
-            }
-          }
-        },
-        {
-          "type": "object",
-          "required": ["haptics"],
-          "properties": {
-            "haptics": {
-              "type": "object",
-              "required": ["ref", "pattern"],
-              "properties": {
-                "ref": { "type": "string" },
-                "pattern": { "type": "string" }
-              }
-            }
-          }
-        }
-      ]
-    }
-  }
+  "required": ["version", "intent", "scene"]
 }
