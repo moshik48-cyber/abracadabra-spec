@@ -42,3 +42,22 @@ Prepare the living room for Shabbat: dim the lights, play a soft nigun, show 'Sh
     ]
   }
 }
+---
+
+## 🔒 Cyber-Resilience & Offline Mode
+
+One of the **unique advantages** of Abracadabra is its **ability to function even if the internet goes down**.  
+While most LLM-based systems depend on constant online access, Abracadabra defines a **Vision Schema** that can be:
+
+- **Stored locally** as JSON blueprints.  
+- **Shared peer-to-peer** between machines without central servers.  
+- **Executed offline** by adapters (e.g., Philips Hue, Raspberry Pi, audio systems) using the same schema.
+
+This means:
+- A city can still run its emergency protocol if networks are under cyberattack.  
+- A factory floor can continue to coordinate machines without cloud access.  
+- Robots and IoT devices can operate with **pre-compiled visions**, even in disconnected environments.
+
+In other words:  
+Abracadabra is not just a convenience layer for LLMs — it is also a **resilient protocol for continuity under attack or outage**.  
+Just like HTML pages can be stored and loaded without internet, Vision Schema makes "intent → action" survivable even when connectivity fails.
