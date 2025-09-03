@@ -30,3 +30,14 @@
   "required": ["action"],
   "additionalProperties": false
 }
+# Golem: The Executable Dream
+
+**Golem** is not another chatbot or LLM.  
+It is a pre-configured agent that receives natural human intent, translates it into structured JSON via a unified MCP schema, and executes it.
+
+- 🧠 No mouth: Golem never speaks — it acts.
+- 🕊️ Not a conversation — but a bridge from vision to execution.
+- 🔒 Offline-ready, secure-by-default.
+- 🧱 Driven by an external control layer (MCP) for validation and actuation.
+
+> In a world of talking bots, Golem is a listening worker.
