@@ -95,3 +95,14 @@ All of the above handle *pieces* (devices, vocabularies, telemetry, planning, or
 💡 **Investor Note:**  
 While existing standards solve narrow slices of interoperability, **Abracadabra is the first to define a unified, human-readable intent schema that works across domains and offline.**  
 This positions it as both **defensible IP** and a potential **foundational layer** for future AI-driven ecosystems.
+## GOLEM Branch
+
+A new philosophical and technical abstraction built on top of Abracadabra:
+- Executes structured dreams
+- Receives one-liner visions
+- Responds in strict JSON
+- Never speaks, only acts
+
+→ `/golem` for source code
+→ `/golem/schema/golem-schema.json` for the spec
+→ `/golem/runtime/golem-runner.js` for minimal prototype
