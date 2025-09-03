@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Golem Intent Execution Schema",
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "The action the Golem will perform"
+    },
+    "client": {
+      "type": "string",
+      "description": "Client name or identifier"
+    },
+    "items": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "List of items or tasks"
+    },
+    "vat": {
+      "type": "number",
+      "description": "VAT rate",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "platform": {
+      "type": "string",
+      "description": "Platform to execute the action (e.g., base44, hue)"
+    }
+  },
+  "required": ["action"],
+  "additionalProperties": false
+}
