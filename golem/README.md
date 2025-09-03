@@ -1,40 +1,38 @@
-# GOLEM
+# 🧱 GOLEM Branch
 
-Golem is a zero-talk, high-intent execution layer for reality-shaping.
+A new philosophical and technical module within Abracadabra.
 
-Unlike LLMs that generate endless conversations, **Golem listens, interprets, and executes** using a strict JSON schema.
+## What is GOLEM?
 
-## 🧠 Intent → 🎯 Action
+GOLEM is a minimalistic runtime agent that:
+- Executes structured dreams (Abracadabra JSON)
+- Receives one-liner visions or full scenes
+- Responds in strict JSON
+- Never speaks, only acts
 
-### Input:
+Think of it as:
+> “A golem that silently follows your structured wishes.”
 
-> "אני צריך הצעת מחיר לשיפוץ עבור שלמה כהן"
+## Folder Structure
 
-### Output:
+- `schema/golem-schema.json`  
+  → JSON Schema that defines the GOLEM-compatible blueprint.
 
-```json
-{
-  "action": "create_quote",
-  "client": "שלמה כהן",
-  "items": ["שפכטל", "צבע", "עבודה"],
-  "vat": 0.17,
-  "platform": "base44"
-}
+- `runtime/golem-runner.js`  
+  → Minimal JavaScript engine that parses and executes a scene JSON.
+
 ---
 
-## 🔬 שלב 5: דמוים ב־`/golem/examples`
+## How to Use
 
-### 📦 hue-demo.json
-```json
-{
-  "action": "set_lights",
-  "platform": "hue",
-  "color": "blue",
-  "zone": "city_center"
-}
-{
-  "action": "drone_delivery",
-  "items": ["פיש", "צ'יפס"],
-  "destination": "תל אביב, רח' השלום 5",
-  "platform": "smartDrone"
-}
+1. **Create a scene JSON**:
+   ```json
+   {
+     "version": "abra-0.1.0",
+     "intent": "Simple lighting scene",
+     "scene": {
+       "flow": [
+         { "do": [{ "lighting": { "ref": "living_room", "preset": "warm" } }] }
+       ]
+     }
+   }
