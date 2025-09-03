@@ -36,3 +36,4 @@ Think of it as:
        ]
      }
    }
+node runtime/golem-runner.js path/to/scene.json
