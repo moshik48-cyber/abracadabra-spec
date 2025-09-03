@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MCP Action Schema",
+  "type": "object",
+  "properties": {
+    "action": { "type": "string" },
+    "client": { "type": "string" },
+    "items": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "vat": { "type": "number" },
+    "platform": { "type": "string" }
+  },
+  "required": ["action", "items"]
+}
